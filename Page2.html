@@ -4,6 +4,117 @@
     <meta charset="UTF-8">  
     <meta name="viewport" content="width=device-width, initial-scale=1.0">  
     <title>Comments Page 2</title>  
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            background-color: #f0f8ff;
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin: 20px 0;
+            font-size: 2em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        hr {
+            border: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #3498db, transparent);
+            margin: 15px 0;
+        }
+
+        ins {
+            color: #27ae60;
+            font-size: 1.1em;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 2px solid #3498db;
+            border-radius: 5px;
+            transition: border-color 0.3s ease;
+        }
+
+        input:focus, textarea:focus {
+            border-color: #e74c3c;
+            outline: none;
+        }
+
+        button {
+            background-color: #3498db;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin: 5px 5px 5px 0;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+
+        #welcome-message {
+            color: #e74c3c;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        #comment-list {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: white;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        #comment-list div {
+            padding: 10px;
+            margin: 10px 0;
+            background-color: #ecf0f1;
+            border-radius: 5px;
+        }
+
+        a {
+            color: #2980b9;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 15px;
+            transition: color 0.3s ease;
+        }
+
+        a:hover {
+            color: #e74c3c;
+            text-decoration: underline;
+        }
+
+        [disabled] {
+            background-color: #ecf0f1 !important;
+            cursor: not-allowed;
+        }
+
+        button:nth-of-type(2) {
+            background-color: #2ecc71;
+        }
+
+        button:nth-of-type(2):hover {
+            background-color: #27ae60;
+        }
+    </style>
 </head>  
 <body>  
     <h1>Write your all chats here!</h1>  
@@ -25,6 +136,7 @@
     <div id="comment-list"></div>  
 
     <script>  
+        // Giữ nguyên script gốc
         let commentCount = 0;  
         let username = "";  
 
@@ -34,7 +146,6 @@
                 username = inputName;  
                 document.getElementById("welcome-message").innerText = "Welcome, " + username + "!";  
                 document.getElementById("username").disabled = true;  
-                document.getElementById("username").style.backgroundColor = "#f0f0f0";  
             } else {  
                 alert("Please enter your name.");  
             }  
@@ -46,12 +157,10 @@
                 commentCount++;  
                 let comment = username + " (" + commentCount + "): " + commentText;  
 
-                // Lưu bình luận vào LocalStorage  
                 let comments = JSON.parse(localStorage.getItem("comments")) || [];  
                 comments.push(comment);  
                 localStorage.setItem("comments", JSON.stringify(comments));  
 
-                // Hiển thị bình luận trên Page2  
                 let commentDiv = document.createElement("div");  
                 commentDiv.innerText = comment;  
                 document.getElementById("comment-list").appendChild(commentDiv);  
@@ -64,14 +173,13 @@
             }  
         }  
 
-        // Điều hướng sang Page3.html  
         function goToPage3() {  
             window.location.href = "Page3.html";  
         }  
     </script>  
-<hr>
-<a href = "index.html">
-    Back to home page
-</a>
+    <hr>
+    <a href="index.html">
+        Back to home page
+    </a>
 </body>  
 </html>
