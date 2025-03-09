@@ -1,34 +1,60 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Comments page!</title>
-<body>
-  <h1>Write your all comments here!</h1>
-  <hr>
-</body>
-<body> 
-  <b><ins>Write your comments below ↓↓↓:</ins></b>
-  <hr>
+<!DOCTYPE html>  
+<html lang="en">  
+<head>  
+    <meta charset="UTF-8">  
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+    <title>Comments Page!</title>  
+</head>  
+<body>  
+    <h1>Write your all comments here!</h1>  
+    <hr>  
 
-<textarea id="comment" name="comment" rows="4" cols="50" placeholder="Write here (Example: My name is Binh!)"></textarea><br>
-<button onclick="submitComment()">Send</button>
-<div id="comment-list"></div>
+    <!-- Phần đăng nhập tên người dùng -->
+    <b><ins>Enter your name:</ins></b><br>  
+    <input type="text" id="username" placeholder="Enter your name here"><br>  
+    <button onclick="login()">Login</button>  
+    <p id="welcome-message"></p>  
+    <hr>  
 
-<script>
-    let commentCount = 0; // Biến đếm số thứ tự người dùng
+    <b><ins>Write your comments below ↓↓↓:</ins></b>  
+    <hr>  
 
-    function submitComment() {
-        let commentText = document.getElementById("comment").value;
-        if (commentText.trim() !== "") {
-            commentCount++; // Tăng số thứ tự sau mỗi bình luận
-            let commentDiv = document.createElement("div");
-            commentDiv.innerText = "Anonymous " + commentCount + ": " + commentText; // Thêm tên "ẨN DANH" và số thứ tự
-            document.getElementById("comment-list").appendChild(commentDiv);
-            document.getElementById("comment").value = ""; // Xóa nội dung ô nhập
-        }
-    }
-</script>
-</body>
+    <textarea id="comment" name="comment" rows="4" cols="50" placeholder="Write your comment here"></textarea><br>  
+    <button onclick="submitComment()">Send</button>  
+    <div id="comment-list"></div>  
+
+    <script>  
+        let commentCount = 0; // Biến đếm số thứ tự bình luận  
+        let username = ""; // Lưu trữ tên người dùng đã đăng nhập  
+
+        // Hàm xử lý đăng nhập  
+        function login() {  
+            const inputName = document.getElementById("username").value.trim();  
+            if (inputName !== "") {  
+                username = inputName;  
+                document.getElementById("welcome-message").innerText = "Welcome, " + username + "!";  
+                document.getElementById("username").disabled = true; // Khóa ô nhập tên sau khi đăng nhập  
+                document.getElementById("username").style.backgroundColor = "#f0f0f0";  
+            } else {  
+                alert("Please enter your name.");  
+            }  
+        }  
+
+        // Hàm xử lý gửi bình luận  
+        function submitComment() {  
+            let commentText = document.getElementById("comment").value.trim();  
+            if (commentText !== "" && username !== "") {  
+                commentCount++;  
+                let commentDiv = document.createElement("div");  
+                commentDiv.innerText = username + " (" + commentCount + "): " + commentText;  
+                document.getElementById("comment-list").appendChild(commentDiv);  
+                document.getElementById("comment").value = "";  
+            } else if (username === "") {  
+                alert("Please login before commenting.");  
+            } else {  
+                alert("Comment cannot be empty.");  
+            }  
+        }  
+    </script>  
+</body>  
 </html>
