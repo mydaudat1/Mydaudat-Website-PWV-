@@ -1,34 +1,37 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Page3 - View Comments from Page2</title>
-</head>
-<body>
-    <h2>Page3 - Comments from Page2</h2>
-    
-    <!-- Comment display area -->
-    <div id="comment-list"></div>
+<!DOCTYPE html>  
+<html lang="en">  
+<head>  
+    <meta charset="UTF-8">  
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+    <title>Comments Page 3</title>  
+</head>  
+<body>  
+    <h1>All Comments</h1>  
+    <hr>  
+    <div id="all-comments"></div>  
+    <button onclick="goBack()">Go Back to Page 2</button>  
 
-    <script>
-        // Function to load comments from localStorage
-        function loadComments() {
-            let comments = JSON.parse(localStorage.getItem("comments")) || [];
-            if (comments.length > 0) {
-                comments.forEach(comment => {
-                    let commentDiv = document.createElement("div");
-                    commentDiv.innerText = comment;
-                    document.getElementById("comment-list").appendChild(commentDiv);
-                });
-            } else {
-                let noCommentDiv = document.createElement("div");
-                noCommentDiv.innerText = "No comments available yet.";
-                document.getElementById("comment-list").appendChild(noCommentDiv);
-            }
-        }
+    <script>  
+        // Tải và hiển thị tất cả bình luận từ LocalStorage  
+        window.onload = function() {  
+            let comments = JSON.parse(localStorage.getItem("comments")) || [];  
+            let commentListDiv = document.getElementById("all-comments");  
 
-        // Load comments when the page is opened
-        window.onload = loadComments;
-    </script>
-</body>
+            if (comments.length === 0) {  
+                commentListDiv.innerText = "No comments yet.";  
+            } else {  
+                comments.forEach(function(comment) {  
+                    let commentDiv = document.createElement("div");  
+                    commentDiv.innerText = comment;  
+                    commentListDiv.appendChild(commentDiv);  
+                });  
+            }  
+        };  
+
+        // Quay lại Page2.html  
+        function goBack() {  
+            window.location.href = "Page2.html";  
+        }  
+    </script>  
+</body>  
 </html>
