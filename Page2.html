@@ -3,7 +3,7 @@
 <head>  
     <meta charset="UTF-8">  
     <meta name="viewport" content="width=device-width, initial-scale=1.0">  
-    <title>Comments Page!</title>  
+    <title>Comments Page 2</title>  
 </head>  
 <body>  
     <h1>Write your all comments here!</h1>  
@@ -21,39 +21,52 @@
 
     <textarea id="comment" name="comment" rows="4" cols="50" placeholder="Write your comment here"></textarea><br>  
     <button onclick="submitComment()">Send</button>  
+    <button onclick="goToPage3()">View All Comments</button>  
     <div id="comment-list"></div>  
 
     <script>  
-        let commentCount = 0; // Biến đếm số thứ tự bình luận  
-        let username = ""; // Lưu trữ tên người dùng đã đăng nhập  
+        let commentCount = 0;  
+        let username = "";  
 
-        // Hàm xử lý đăng nhập  
         function login() {  
             const inputName = document.getElementById("username").value.trim();  
             if (inputName !== "") {  
                 username = inputName;  
                 document.getElementById("welcome-message").innerText = "Welcome, " + username + "!";  
-                document.getElementById("username").disabled = true; // Khóa ô nhập tên sau khi đăng nhập  
+                document.getElementById("username").disabled = true;  
                 document.getElementById("username").style.backgroundColor = "#f0f0f0";  
             } else {  
                 alert("Please enter your name.");  
             }  
         }  
 
-        // Hàm xử lý gửi bình luận  
         function submitComment() {  
             let commentText = document.getElementById("comment").value.trim();  
             if (commentText !== "" && username !== "") {  
                 commentCount++;  
+                let comment = username + " (" + commentCount + "): " + commentText;  
+
+                // Lưu bình luận vào LocalStorage  
+                let comments = JSON.parse(localStorage.getItem("comments")) || [];  
+                comments.push(comment);  
+                localStorage.setItem("comments", JSON.stringify(comments));  
+
+                // Hiển thị bình luận trên Page2  
                 let commentDiv = document.createElement("div");  
-                commentDiv.innerText = username + " (" + commentCount + "): " + commentText;  
+                commentDiv.innerText = comment;  
                 document.getElementById("comment-list").appendChild(commentDiv);  
+
                 document.getElementById("comment").value = "";  
             } else if (username === "") {  
                 alert("Please login before commenting.");  
-            } else {
+            } else {  
                 alert("Comment cannot be empty.");  
             }  
+        }  
+
+        // Điều hướng sang Page3.html  
+        function goToPage3() {  
+            window.location.href = "Page3.html";  
         }  
     </script>  
 </body>  
