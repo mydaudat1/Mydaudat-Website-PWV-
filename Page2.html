@@ -1,12 +1,10 @@
-<!DOCTYPE html>  
-<html lang="en">  
-<head>  
-    <meta charset="UTF-8">  
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
-    <title>Comments Page 2</title>  
-    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>  
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comments Page 2</title>
     <style>
-        /* Giữ nguyên CSS */
         * {
             margin: 0;
             padding: 0;
@@ -116,65 +114,79 @@
         button:nth-of-type(2):hover {
             background-color: #27ae60;
         }
-</style>
-</head>  
-<body>  
-    <h1>Write your all chats here!</h1>  
-    <hr>  
-
-    <b><ins>Enter your name:</ins></b><br>  
-    <input type="text" id="username" placeholder="Enter your name here"><br>  
-    <button onclick="login()">Login</button>  
-    <p id="welcome-message"></p>  
-    <hr>  
-
-    <b><ins>Write your comments below ↓↓↓:</ins></b>  
-    <hr>  
-
-    <textarea id="comment" name="comment" rows="4" cols="50" placeholder="Write your comment here"></textarea><br>  
-    <button onclick="submitComment()">Send</button>  
-    <button onclick="goToPage3()">View All Comments</button>  
-    <div id="comment-list"></div>  
-
-    <script>  
-        const socket = io("http://localhost:3000");  
-        let username = "";  
-
-        function login() {  
-            const inputName = document.getElementById("username").value.trim();  
-            if (inputName !== "") {  
-                username = inputName;  
-                document.getElementById("welcome-message").innerText = "Welcome, " + username + "!";  
-                document.getElementById("username").disabled = true;  
-            } else {  
-                alert("Please enter your name.");  
-            }  
-        }  
-
-        function submitComment() {  
-            let commentText = document.getElementById("comment").value.trim();  
-            if (commentText !== "" && username !== "") {  
-                socket.emit("new_comment", { user: username, text: commentText });  
-                document.getElementById("comment").value = "";  
-            } else if (username === "") {  
-                alert("Please login before commenting.");  
-            } else {  
-                alert("Comment cannot be empty.");  
-            }  
-        }  
-
-        socket.on("receive_comment", (data) => {  
-            let commentDiv = document.createElement("div");  
-            commentDiv.innerText = `${data.user}: ${data.text}`;  
-            document.getElementById("comment-list").appendChild(commentDiv);  
-        });  
-
-        function goToPage3() {  
-            window.location.href = "Page3.html";  
-        }  
-    </script>  
-
+    </style>
+    <script src="https://cdn.socket.io/4.8.1/socket.io.min.js"></script>
+</head>
+<body>
+    <h1>Write your all chats here!</h1>
     <hr>
-    <a href="index.html">Back to home page</a>
-</body>  
+
+    <!-- Phần đăng nhập tên người dùng -->
+    <b><ins>Enter your name:</ins></b><br>
+    <input type="text" id="username" placeholder="Enter your name here"><br>
+    <button onclick="login()">Login</button>
+    <p id="welcome-message"></p>
+    <hr>
+
+    <b><ins>Write your comments below ↓↓↓:</ins></b>
+    <hr>
+
+    <textarea id="comment" name="comment" rows="4" cols="50" placeholder="Write your comment here"></textarea><br>
+    <button onclick="submitComment()">Send</button>
+    <button onclick="goToPage3()">View All Comments</button>
+    <div id="comment-list"></div>
+
+    <script>
+        const socket = io();
+
+        function addComment(data) {
+            let commentDiv = document.createElement("div");
+            commentDiv.innerText = data.username + " (" + data.count + "): " + data.commentText;
+            document.getElementById("comment-list").appendChild(commentDiv);
+        }
+
+        socket.on('loadComments', (comments) => {
+            comments.forEach(comment => {
+                addComment(comment);
+            });
+        });
+
+        socket.on('newComment', (comment) => {
+            addComment(comment);
+        });
+
+        let username = "";
+
+        function login() {
+            const inputName = document.getElementById("username").value.trim();
+            if (inputName !== "") {
+                username = inputName;
+                document.getElementById("welcome-message").innerText = "Welcome, " + username + "!";
+                document.getElementById("username").disabled = true;
+            } else {
+                alert("Please enter your name.");
+            }
+        }
+
+        function submitComment() {
+            let commentText = document.getElementById("comment").value.trim();
+            if (commentText !== "" && username !== "") {
+                socket.emit('submitComment', { username: username, commentText: commentText });
+                document.getElementById("comment").value = "";
+            } else if (username === "") {
+                alert("Please login before commenting.");
+            } else {
+                alert("Comment cannot be empty.");
+            }
+        }
+
+        function goToPage3() {
+            window.location.href = "Page3.html";
+        }
+    </script>
+    <hr>
+    <a href="index.html">
+        Back to home page
+    </a>
+</body>
 </html>
