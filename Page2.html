@@ -6,80 +6,90 @@
     <title>Comments Page 2</title>
     <style>
         * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Arial', sans-serif;
+ margin: 0;
+ padding: 0;
+ box-sizing: border-box;
+ font-family: 'Roboto', sans-serif; /* Using Roboto as a common Material Design font */
         }
 
         body {
-            background-color: #f0f8ff;
-            padding: 20px;
-            max-width: 800px;
-            margin: 0 auto;
+ background-color: #e8f5e9; /* Lightest green */
+ padding: 24px; /* Increased padding for better spacing */
+ max-width: 900px; /* Increased max width */
+ margin: 0 auto;
+ color: #1b5e20; /* Dark green text */
         }
 
         h1 {
-            color: #2c3e50;
-            text-align: center;
-            margin: 20px 0;
-            font-size: 2em;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+ color: #1b5e20; /* Dark green for headings */
+ text-align: center;
+ margin: 24px 0; /* Increased margin */
+ font-size: 2.5em; /* Slightly larger font size */
+ text-shadow: none; /* Removing text shadow for a cleaner look */
+ font-weight: normal; /* Material Design often uses lighter weights */
         }
 
         hr {
-            border: 0;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, #3498db, transparent);
-            margin: 15px 0;
+ border: none; /* Removing default border */
+ height: 1px;
+ background-color: #4caf50; /* Green accent color */
+ margin: 20px 0; /* Increased margin */
         }
 
         ins {
-            color: #27ae60;
-            font-size: 1.1em;
+ color: #388e3c; /* Medium green for emphasis */
+ font-size: 1.2em; /* Slightly larger font size */
+ text-decoration: none; /* Remove underline */
+ font-weight: bold;
         }
 
         input, textarea {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            border: 2px solid #3498db;
-            border-radius: 5px;
-            transition: border-color 0.3s ease;
+ width: 100%;
+ padding: 12px; /* Increased padding */
+ margin: 12px 0; /* Increased margin */
+ border: 1px solid #a5d6a7; /* Light green border */
+ border-radius: 4px; /* Slightly smaller border-radius */
+ transition: border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out; /* Added box-shadow transition */
+ background-color: #ffffff; /* White background for inputs */
+ color: #1b5e20; /* Dark green text in inputs */
         }
 
         input:focus, textarea:focus {
-            border-color: #e74c3c;
-            outline: none;
+ border-color: #4caf50; /* Green accent on focus */
+ box-shadow: 0 0 0 0.2rem rgba(76, 175, 80, 0.25); /* Green glow on focus */
+ outline: none; /* Remove default outline */
         }
 
         button {
-            background-color: #3498db;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-            margin: 5px 5px 5px 0;
+ background-color: #4caf50; /* Green primary button color */
+ color: white;
+ padding: 10px 20px;
+ border: none;
+ border-radius: 4px;
+ cursor: pointer;
+ transition: background-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+ margin: 8px 8px 8px 0; /* Increased margin */
+ text-transform: uppercase; /* Material Design button style */
+ font-weight: 500; /* Medium font weight */
         }
 
         button:hover {
-            background-color: #2980b9;
+ background-color: #388e3c; /* Darker green on hover */
+ box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add shadow on hover */
         }
 
         #welcome-message {
-            color: #e74c3c;
-            font-weight: bold;
-            margin: 10px 0;
+ color: #ff9800; /* Orange for welcome message */
+ font-weight: 500; /* Medium font weight */
+ margin: 12px 0; /* Increased margin */
         }
 
         #comment-list {
-            margin-top: 20px;
-            padding: 15px;
-            background-color: white;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+ margin-top: 24px; /* Increased margin */
+ padding: 16px; /* Increased padding */
+ background-color: #ffffff; /* White background */
+ border-radius: 4px;
+ box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24); /* Material Design shadow */
         }
 
         #comment-list div {
@@ -87,32 +97,36 @@
             margin: 10px 0;
             background-color: #ecf0f1;
             border-radius: 5px;
+            color: #1b5e20; /* Dark green text */
+            border-left: 4px solid #81c784; /* Light green left border */
         }
 
         a {
-            color: #2980b9;
-            text-decoration: none;
-            display: inline-block;
-            margin-top: 15px;
-            transition: color 0.3s ease;
+ color: #4caf50; /* Green link color */
+ text-decoration: none;
+ display: inline-block;
+ margin-top: 16px; /* Increased margin */
+ transition: color 0.3s ease-in-out;
+ font-weight: 500;
         }
 
         a:hover {
-            color: #e74c3c;
-            text-decoration: underline;
+ color: #388e3c; /* Darker green on hover */
+ text-decoration: underline; /* Underline on hover */
         }
 
         [disabled] {
-            background-color: #ecf0f1 !important;
+ background-color: #e0e0e0 !important; /* Light grey for disabled */
             cursor: not-allowed;
+ color: #757575; /* Grey text for disabled */
         }
 
         button:nth-of-type(2) {
-            background-color: #2ecc71;
+ background-color: #aed581; /* Light green accent button */
         }
 
         button:nth-of-type(2):hover {
-            background-color: #27ae60;
+ background-color: #8bc34a; /* Medium green accent on hover */
         }
     </style>
     <script src="https://cdn.socket.io/4.8.1/socket.io.min.js"></script>
@@ -129,15 +143,34 @@
     <hr>
 
     <b><ins>Write your comments below ↓↓↓:</ins></b>
+    <p>Only comments will be shown on Page 3.</p>
     <hr>
 
-    <textarea id="comment" name="comment" rows="4" cols="50" placeholder="Write your comment here"></textarea><br>
-    <button onclick="submitComment()">Send</button>
+    <textarea id="comment-input" name="comment" rows="4" cols="50" placeholder="Write your comment here"></textarea><br>
+    <button onclick="submitComment()">Send Comment</button>
     <button onclick="goToPage3()">View All Comments</button>
     <div id="comment-list"></div>
 
+    <hr>
+    <b><ins>Chat Section ↓↓↓:</ins></b>
+    <p>Your chats will only be visible on this page.</p>
+    <hr>
+
+    <div id="chat-list" style="height: 200px; overflow-y: scroll; border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">
+        <!-- Chat messages will appear here -->
+    </div>
+
+    <input type="text" id="chat-input" placeholder="Type your message here">
+    <button onclick="sendMessage()">Send Chat</button>
+
     <script>
         const socket = io();
+
+        function addMessage(data) {
+            let messageDiv = document.createElement("div");
+            messageDiv.innerText = data.username + ": " + data.messageText;
+            document.getElementById("chat-list").appendChild(messageDiv);
+        }
 
         function addComment(data) {
             let commentDiv = document.createElement("div");
@@ -155,6 +188,10 @@
             addComment(comment);
         });
 
+        socket.on('newMessage', (message) => {
+            addMessage(message);
+        });
+
         let username = "";
 
         function login() {
@@ -169,10 +206,22 @@
         }
 
         function submitComment() {
-            let commentText = document.getElementById("comment").value.trim();
+            let commentText = document.getElementById("comment-input").value.trim();
             if (commentText !== "" && username !== "") {
                 socket.emit('submitComment', { username: username, commentText: commentText });
-                document.getElementById("comment").value = "";
+                document.getElementById("comment-input").value = "";
+            } else if (username === "") {
+                alert("Please login before commenting.");
+            } else {
+                alert("Comment cannot be empty.");
+            }
+        }
+
+        function sendMessage() {
+            let messageText = document.getElementById("chat-input").value.trim();
+            if (messageText !== "" && username !== "") {
+                socket.emit('sendMessage', { username: username, messageText: messageText });
+                document.getElementById("chat-input").value = "";
             } else if (username === "") {
                 alert("Please login before commenting.");
             } else {

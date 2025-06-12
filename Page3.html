@@ -6,61 +6,66 @@
     <title>Comments Page 3</title>  
     <style>
         * {
-            margin: 0;
-            padding: 0;
+            margin: 0; /* Material 3 uses spacing tokens, but for a simple conversion, keeping 0 */
+            padding: 0; /* Material 3 uses spacing tokens, but for a simple conversion, keeping 0 */
             box-sizing: border-box;
-            font-family: 'Arial', sans-serif;
+            font-family: 'Roboto', sans-serif; /* Common font for Material Design */
         }
 
         body {
-            background-color: #f0f8ff;
-            padding: 20px;
-            max-width: 800px;
+            background-color: #f8f9fa; /* A light neutral background */
+            padding: 24px; /* Spacing similar to Material 3 padding tokens */
+            max-width: 800px; /* Keeping a reasonable max-width */
             margin: 0 auto;
         }
 
         h1 {
-            color: #2c3e50;
+            color: #1a1c1e; /* A dark neutral color for text */
             text-align: center;
-            margin: 20px 0;
-            font-size: 2em;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            margin: 32px 0; /* Increased vertical margin */
+            font-size: 2.25em; /* Larger heading size */
+            font-weight: 400; /* Regular weight for expressive headers */
+            /* Material 3 generally doesn't use text shadows on headings */
         }
 
         hr {
             border: 0;
             height: 1px;
-            background: linear-gradient(90deg, transparent, #3498db, transparent);
-            margin: 15px 0;
+            background-color: #e3e3e3; /* A subtle divider color */
+            margin: 16px 0; /* Consistent vertical margin */
         }
 
         #all-comments {
-            background-color: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            margin: 20px 0;
+            background-color: #ffffff; /* White background for the container */
+            padding: 16px; /* Padding inside the container */
+            border-radius: 12px; /* More rounded corners for expressive feel */
+            box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24); /* A subtle Material 3 shadow */
+            margin: 24px 0; /* Vertical margin for the container */
         }
 
         #all-comments div {
-            padding: 15px;
-            margin: 10px 0;
-            background-color: #ecf0f1;
-            border-radius: 5px;
-            border-left: 4px solid #3498db;
+            padding: 12px 16px; /* Padding inside comment blocks */
+            margin: 8px 0; /* Vertical margin between comments */
+            background-color: #eef2f7; /* A light, slightly tinted background for comment blocks */
+            border-radius: 8px; /* Rounded corners for comment blocks */
+            border-left: 4px solid #006a61; /* Material 3 primary green color for the left border */
             transition: transform 0.2s ease;
+            color: #1a1c1e; /* Dark neutral text color */
+            font-size: 1em; /* Base font size */
         }
 
         #all-comments div:hover {
-            transform: translateX(5px);
+            transform: translateX(4px); /* Slightly less aggressive hover effect */
+            background-color: #e0e6ed; /* A slightly darker tint on hover */
         }
 
         button {
-            background-color: #3498db;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
+            background-color: #006a61; /* Material 3 primary green color */
+            color: #ffffff; /* White text color */
+            padding: 12px 24px; /* Larger padding for a more substantial button */
+            border: none; /* No border */
+            border-radius: 20px; /* Pill-shaped button */
+            font-weight: 500; /* Medium font weight */
             cursor: pointer;
             transition: background-color 0.3s ease;
             margin: 15px 0;
@@ -71,50 +76,101 @@
         }
 
         button:hover {
-            background-color: #2980b9;
+            background-color: #004d44; /* Darker shade of green on hover */
         }
 
         a {
-            color: #2980b9;
-            text-decoration: none;
+            color: #006a61; /* Material 3 primary green for links */
+            text-decoration: none; /* No underline by default */
             display: inline-block;
             margin-top: 15px;
             transition: color 0.3s ease;
+            font-weight: 500; /* Medium font weight for links */
         }
 
         a:hover {
-            color: #e74c3c;
+            color: #004d44; /* Darker green on hover */
             text-decoration: underline;
         }
 
         #all-comments:empty::before {
             content: "No comments yet.";
+            color: #757575; /* A neutral gray color */
+            font-style: italic;
+            display: block; /* Ensure it takes up space */
+            text-align: center; /* Center the text */
+        }
+
+        #all-chats {
+            background-color: #ffffff; /* White background for the container */
+            padding: 16px; /* Padding inside the container */
+            border-radius: 12px; /* More rounded corners for expressive feel */
+            box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24); /* A subtle Material 3 shadow */
+            margin: 24px 0; /* Vertical margin for the container */
+        }
+
+        #all-chats div {
+            padding: 12px 16px; /* Padding inside chat blocks */
+            margin: 8px 0; /* Vertical margin between chats */
+            background-color: #eef2f7; /* A light, slightly tinted background for chat blocks */
+            border-radius: 8px; /* Rounded corners for chat blocks */
+            border-left: 4px solid #c0392b; /* A distinct color for chat messages */
+            transition: transform 0.2s ease;
+            color: #1a1c1e; /* Dark neutral text color */
+        }
+
+        #all-chats div:hover {
+            transform: translateX(4px); /* Slightly less aggressive hover effect */
+        }
+
+        #all-chats:empty::before {
+            content: "No chat messages yet.";
             color: #7f8c8d;
             font-style: italic;
         }
+
+        /* Added styles for overall theme consistency */
     </style>
 </head>  
 <body>  
     <h1>All Comments</h1>  
     <hr>  
-    <div id="all-comments"></div>  
-    <button onclick="goBack()">Go Back to Page 2</button>  
+    <div id="all-comments"></div>
 
     <script>  
         // Tải và hiển thị tất cả bình luận từ LocalStorage  
         window.onload = function() {  
             let comments = JSON.parse(localStorage.getItem("comments")) || [];  
             let commentListDiv = document.getElementById("all-comments");  
+            let chatMessages = JSON.parse(localStorage.getItem("chatMessages")) || [];
+            let chatListDiv = document.getElementById("all-chats");
 
             if (comments.length === 0) {  
-                commentListDiv.innerText = ""; // Kích hoạt pseudo-element
+                // Kích hoạt pseudo-element
             } else {  
                 comments.forEach(function(comment) {  
                     let commentDiv = document.createElement("div");  
-                    commentDiv.innerText = comment;  
+                    // Assuming comment is stored as an object with username, count, and text
+                    // Adjust this based on how comments are stored in LocalStorage
+                    if (typeof comment === 'object' && comment !== null) {
+                        commentDiv.innerText = `${comment.username} (${comment.count}): ${comment.commentText}`;
+                    } else {
+                        commentDiv.innerText = comment; // For backward compatibility or if storing as plain text
+                    }
                     commentListDiv.appendChild(commentDiv);  
                 });  
             }  
+
+            if (chatMessages.length === 0) {
+                // Kích hoạt pseudo-element
+            } else {
+                chatMessages.forEach(function(chatMessage) {
+                    let chatDiv = document.createElement("div");
+                    // Assuming chatMessage is stored as an object with username and text
+                    chatDiv.innerText = `${chatMessage.username}: ${chatMessage.text}`;
+                    chatListDiv.appendChild(chatDiv);
+                });
+            }
         };  
 
         // Quay lại Page2.html  
@@ -122,6 +178,11 @@
             window.location.href = "Page2.html";  
         }  
     </script> 
+    <h1>All Chat Messages</h1>
+    <hr>
+    <div id="all-chats"></div>
+
+    <button onclick="goBack()">Go Back to Page 2</button>
     <hr>
     <a href="index.html">
         Back to home page
