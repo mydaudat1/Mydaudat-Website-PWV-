@@ -1,0 +1,147 @@
+/* Import Material Symbols Outlined font for icons */
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0');
+
+:root {
+    /* Material 3 Color Palette - Example with Deep Purple */
+    --md-sys-color-primary: #673AB7; /* Deep Purple */
+    --md-sys-color-on-primary: #FFFFFF;
+    --md-sys-color-primary-container: #EADDFF;
+    --md-sys-color-on-primary-container: #21005D;
+    --md-sys-color-secondary: #625B71;
+    --md-sys-color-on-secondary: #FFFFFF;
+    --md-sys-color-secondary-container: #E8DEF8;
+    --md-sys-color-on-secondary-container: #1D192B;
+    --md-sys-color-tertiary: #7D5260;
+    --md-sys-color-on-tertiary: #FFFFFF;
+    --md-sys-color-tertiary-container: #FFD8E4;
+    --md-sys-color-on-tertiary-container: #31111D;
+    --md-sys-color-error: #BA1A1A;
+    --md-sys-color-error-container: #FFDAD6;
+    --md-sys-color-on-error: #FFFFFF;
+    --md-sys-color-on-error-container: #410002;
+    --md-sys-color-background: #EDE7F6; /* Light Purple */
+    --md-sys-color-on-background: #1D1B20;
+    --md-sys-color-surface: #FFFBFF;
+    --md-sys-color-on-surface: #1D1B20;
+    --md-sys-color-surface-variant: #E7E0EB;
+    --md-sys-color-on-surface-variant: #49454F;
+    --md-sys-color-outline: #7A757F;
+    --md-sys-color-inverse-on-surface: #F5EFF4;
+    --md-sys-color-inverse-surface: #323035;
+    --md-sys-color-inverse-primary: #D0BCFF;
+    --md-sys-color-shadow: #000000;
+    --md-sys-color-surface-tint: #6750A4;
+    --md-sys-color-outline-variant: #CAC4D0;
+    --md-sys-color-scrim: #000000;
+}
+
+body {
+    font-family: 'Roboto', sans-serif; /* Using Roboto as a Material 3 font */
+    background-color: var(--md-sys-color-background);
+    color: var(--md-sys-color-on-background);
+    line-height: 1.6;
+    padding: 20px;
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+h1 {
+    color: var(--md-sys-color-on-background);
+    text-align: center;
+    margin: 30px 0;
+    font-size: 2.5em; /* This can be adjusted based on Material 3 headline scales */
+    font-weight: 700; /* Adjusted for Roboto bold */
+}
+
+hr {
+    border: none;
+    height: 1px;
+    background-color: var(--md-sys-color-outline-variant); /* Using outline variant for divider */
+    margin: 20px 0;
+    width: 80%;
+    max-width: 600px;
+}
+
+/* Styles for Material 3 Buttons */
+button {
+    background-color: var(--md-sys-color-primary);
+    color: var(--md-sys-color-on-primary);
+    padding: 12px 25px;
+    border: none;
+    border-radius: 20px; /* Full pill shape for Material 3 */
+    font-size: 1em;
+    font-weight: 500; /* Medium weight for labels */
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    margin: 20px auto;
+    display: block;
+    text-align: center;
+}
+
+button:hover {
+    background-color: var(--md-sys-color-primary-container); /* Example hover effect */
+    color: var(--md-sys-color-on-primary-container);
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+a {
+    color: var(--md-sys-color-primary);
+    text-decoration: none;
+    transition: color 0.3s ease;
+    font-weight: 500; /* Medium weight for links */
+    margin-top: 15px;
+    display: inline-block;
+}
+
+a:hover {
+    color: var(--md-sys-color-secondary); /* Example hover color */
+}
+
+#all-comments,
+#all-chats {
+    background-color: var(--md-sys-color-surface-variant); /* Using surface variant for containers */
+    border-radius: 12px; /* Material 3 standard radius */
+    box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1), 0px 1px 2px rgba(0, 0, 0, 0.06); /* Material 3 shadow */
+    padding: 20px;
+    margin: 20px auto;
+    width: 90%;
+    max-width: 700px;
+    backdrop-filter: blur(10px); /* Apply blur effect if supported */
+    -webkit-backdrop-filter: blur(10px); /* For Safari */
+    border: 1px solid rgba(255, 255, 255, 0.2); /* Subtle border */
+}
+
+#all-comments div,
+#all-chats div {
+    background-color: var(--md-sys-color-surface); /* Using surface color for individual items */
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 8px; /* Slightly smaller radius for items */
+    box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.08); /* Subtle shadow for items */
+    transition: transform 0.2s ease;
+}
+
+#all-comments div:last-child,
+#all-chats div:last-child {
+    margin-bottom: 0; /* Ensure no extra space after the last item */
+}
+
+#all-comments div:hover,
+#all-chats div:hover {
+    transform: translateX(5px);
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.12); /* Slightly more pronounced shadow on hover */
+}
+
+#all-comments:empty::before,
+#all-chats:empty::before {
+    content: "No items yet.";
+    color: var(--text-color-dark);
+    opacity: 0.6;
+    display: block;
+    text-align: center;
+    padding: 20px;
+}

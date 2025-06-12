@@ -14,6 +14,11 @@
         }
     </style>
     <style>
+ .fade-on-scroll {
+ transition: opacity 0.3s ease-out;
+ }
+ </style>
+    <style>
         * {
  margin: 0;
  padding: 0;
@@ -165,7 +170,6 @@
 
     <textarea id="comment-input" name="comment" rows="4" cols="50" placeholder="Write your comment here"></textarea><br>
     <button onclick="submitComment()">Send Comment</button>
-    <button onclick="goToPage3()">View All Comments</button>
     <div id="comment-list"></div>
     <hr>
 
@@ -182,6 +186,23 @@
     <a href="index.html">
         Back to home page
     </a>
+
+ <script>
+  window.addEventListener('scroll', function() {
+    var element = document.querySelector('#header');
+    var distanceToTop = element.getBoundingClientRect().top;
+    var opacity = 1;
+
+    if (distanceToTop < 0) {
+      opacity = 1 + distanceToTop / 200;
+      if (opacity < 0) {
+        opacity = 0;
+      }
+    }
+
+    element.style.opacity = opacity;
+  });
+ </script>
 
     <script>
         const socket = io();
@@ -203,12 +224,6 @@
             document.getElementById("chat-box").appendChild(messageDiv);
         }
 
-        function addComment(data) {
-            let commentDiv = document.createElement("div");
-            commentDiv.innerText = data.username + " (" + data.count + "): " + data.commentText;
-            document.getElementById("comment-list").appendChild(commentDiv);
-        }
-
         function timeoutFunction() {
             typing = false;
             socket.emit("typing", { username: username, isTyping: false });
@@ -228,18 +243,10 @@
 
         socket.on('loadComments', (comments) => {
             comments.forEach(comment => {
-                addComment(comment);
+                let commentDiv = document.createElement("div");
+                commentDiv.innerText = comment.username + " (" + comment.count + "): " + comment.commentText;
+                document.getElementById("chat-box").appendChild(commentDiv);
             });
-        });
-
-        socket.on('newComment', (comment) => {
-            addComment(comment);
-        });
-
-        socket.on('newMessage', (message) => {
-            // Clear typing indicator when a new message arrives
-            document.getElementById('typing-indicator').innerText = '';
-            addMessage(message);
         });
 
         socket.on('typing', (data) => {
@@ -266,7 +273,9 @@
         function submitComment() {
             let commentText = document.getElementById("comment-input").value.trim();
             if (commentText !== "" && username !== "") {
-                socket.emit('newComment', { username: username, commentText: commentText });
+                // Emit as a message to be displayed in the chat box
+                socket.emit('sendMessage', { username: username, messageText: commentText });
+                // No need to add comment locally, let the server broadcast handle it
                 document.getElementById("comment-input").value = "";
             } else if (username === "") {
                 alert("Please login before commenting.");
@@ -288,10 +297,6 @@
             socket.emit('sendMessage', { username: username, messageText: messageText });
                 document.getElementById("chat-input").value = "";
             timeoutFunction(); // Reset typing indicator after sending message
-        }
-
-        function goToPage3() {
-            window.location.href = "Page3.html";
         }
     </script>
     <hr>
