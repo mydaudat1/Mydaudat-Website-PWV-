@@ -155,18 +155,7 @@
             socket.emit('getComments');
         };  
 
-        // Listen for the 'commentAdded' event to receive and display comments
-        socket.on('commentAdded', function(comment) {
-            let commentListDiv = document.getElementById("all-comments");
-            let commentDiv = document.createElement("div");
-            if (typeof comment === 'object' && comment !== null) {
-                commentDiv.innerText = `${comment.username} (${comment.count}): ${comment.commentText}`;
-            } else {
-                commentDiv.innerText = comment; // For backward compatibility
-            }
-            commentListDiv.appendChild(commentDiv);
-        });
-
+        // Listen for the 'commentAdded' event to receive and display newly added comments
         // Listen for the 'loadComments' event (or reuse 'commentAdded') to load initial comments
         // This is assumed to be sent from the server in response to 'getComments'
         socket.on('commentAdded', function(comments) {
@@ -183,9 +172,18 @@
                     commentListDiv.appendChild(commentDiv);
                 });
             }
+            // Also handle single new comments being added
+            else if (typeof comments === 'object' && comments !== null) {
+                let commentListDiv = document.getElementById("all-comments");
+                let commentDiv = document.createElement("div");
+                commentDiv.innerText = `${comments.username} (${comments.count}): ${comments.commentText}`;
+                commentListDiv.appendChild(commentDiv);
+            } else if (typeof comments === 'string') {
+                let commentListDiv = document.getElementById("all-comments");
+                commentListDiv.innerHTML += `<div>${comments}</div>`; // Append as a new div
+            }
         });
 
-        // Listen for the 'chatMessage' event to display chat messages (if you decide to display them here too)
         socket.on('chatMessage', function(chatMessage) {
             let chatListDiv = document.getElementById("all-chats");
             if (chatListDiv) { // Check if the chat div exists
@@ -196,11 +194,15 @@
                     // Assuming chatMessage is stored as an object with username and text
                     chatDiv.innerText = `${chatMessage.username}: ${chatMessage.text}`;
                     chatListDiv.appendChild(chatDiv);
-                });
+                } else {
+                    chatDiv.innerText = chatMessage; // For backward compatibility
+                    chatListDiv.appendChild(chatDiv);
+                }
             }
         };  
     </script> 
  <script src="/socket.io/socket.io.js"></script>
+    <script>
         // Quay lại Page2.html  
         function goBack() {  
             window.location.href = "Page2.html";  
