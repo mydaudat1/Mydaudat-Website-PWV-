@@ -3,7 +3,16 @@
 <head>  
     <meta charset="UTF-8">  
     <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <title>Comments Page 3</title>  
+    <style>
+        :root {
+            --md-sys-color-primary: #006a61; /* Example Primary color */
+            --md-sys-color-on-primary: #ffffff; /* Example On Primary color */
+            --md-sys-color-background: #f8f9fa; /* Example Background color */
+            --md-sys-color-on-background: #1a1c1e; /* Example On Background color */
+        }
+    </style>
     <style>
         * {
             margin: 0; /* Material 3 uses spacing tokens, but for a simple conversion, keeping 0 */
@@ -138,33 +147,51 @@
     <div id="all-comments"></div>
 
     <script>  
-        // Tải và hiển thị tất cả bình luận từ LocalStorage  
-        window.onload = function() {  
-            let comments = JSON.parse(localStorage.getItem("comments")) || [];  
-            let commentListDiv = document.getElementById("all-comments");  
-            let chatMessages = JSON.parse(localStorage.getItem("chatMessages")) || [];
-            let chatListDiv = document.getElementById("all-chats");
+        // Connect to the Socket.IO server
+        const socket = io();
 
-            if (comments.length === 0) {  
-                // Kích hoạt pseudo-element
-            } else {  
-                comments.forEach(function(comment) {  
-                    let commentDiv = document.createElement("div");  
-                    // Assuming comment is stored as an object with username, count, and text
-                    // Adjust this based on how comments are stored in LocalStorage
+        // Request comments from the server when the page loads
+        window.onload = function() {  
+            socket.emit('getComments');
+        };  
+
+        // Listen for the 'commentAdded' event to receive and display comments
+        socket.on('commentAdded', function(comment) {
+            let commentListDiv = document.getElementById("all-comments");
+            let commentDiv = document.createElement("div");
+            if (typeof comment === 'object' && comment !== null) {
+                commentDiv.innerText = `${comment.username} (${comment.count}): ${comment.commentText}`;
+            } else {
+                commentDiv.innerText = comment; // For backward compatibility
+            }
+            commentListDiv.appendChild(commentDiv);
+        });
+
+        // Listen for the 'loadComments' event (or reuse 'commentAdded') to load initial comments
+        // This is assumed to be sent from the server in response to 'getComments'
+        socket.on('commentAdded', function(comments) {
+            let commentListDiv = document.getElementById("all-comments");
+            commentListDiv.innerHTML = ''; // Clear existing comments before loading
+            if (Array.isArray(comments)) {
+                comments.forEach(function(comment) {
+                    let commentDiv = document.createElement("div");
                     if (typeof comment === 'object' && comment !== null) {
                         commentDiv.innerText = `${comment.username} (${comment.count}): ${comment.commentText}`;
                     } else {
-                        commentDiv.innerText = comment; // For backward compatibility or if storing as plain text
+                        commentDiv.innerText = comment;
                     }
-                    commentListDiv.appendChild(commentDiv);  
-                });  
-            }  
+                    commentListDiv.appendChild(commentDiv);
+                });
+            }
+        });
 
-            if (chatMessages.length === 0) {
-                // Kích hoạt pseudo-element
-            } else {
-                chatMessages.forEach(function(chatMessage) {
+        // Listen for the 'chatMessage' event to display chat messages (if you decide to display them here too)
+        socket.on('chatMessage', function(chatMessage) {
+            let chatListDiv = document.getElementById("all-chats");
+            if (chatListDiv) { // Check if the chat div exists
+                let chatDiv = document.createElement("div");
+                // Assuming chatMessage is an object with username and text
+                if (typeof chatMessage === 'object' && chatMessage !== null) {
                     let chatDiv = document.createElement("div");
                     // Assuming chatMessage is stored as an object with username and text
                     chatDiv.innerText = `${chatMessage.username}: ${chatMessage.text}`;
@@ -172,7 +199,8 @@
                 });
             }
         };  
-
+    </script> 
+ <script src="/socket.io/socket.io.js"></script>
         // Quay lại Page2.html  
         function goBack() {  
             window.location.href = "Page2.html";  

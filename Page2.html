@@ -4,6 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Comments Page 2</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <style>
+        :root {
+            --md-sys-color-primary: #6750A4;
+            --md-sys-color-on-primary: #FFFFFF;
+            --md-sys-color-surface: #FFFBFF;
+            --md-sys-color-on-surface: #1C1B1F;
+        }
+    </style>
     <style>
         * {
  margin: 0;
@@ -13,11 +22,11 @@
         }
 
         body {
- background-color: #e8f5e9; /* Lightest green */
+ background-color: var(--md-sys-color-surface);
  padding: 24px; /* Increased padding for better spacing */
  max-width: 900px; /* Increased max width */
  margin: 0 auto;
- color: #1b5e20; /* Dark green text */
+ color: var(--md-sys-color-on-surface);
         }
 
         h1 {
@@ -30,7 +39,7 @@
         }
 
         hr {
- border: none; /* Removing default border */
+ border: none;
  height: 1px;
  background-color: #4caf50; /* Green accent color */
  margin: 20px 0; /* Increased margin */
@@ -61,7 +70,7 @@
         }
 
         button {
- background-color: #4caf50; /* Green primary button color */
+ background-color: var(--md-sys-color-primary);
  color: white;
  padding: 10px 20px;
  border: none;
@@ -76,6 +85,14 @@
         button:hover {
  background-color: #388e3c; /* Darker green on hover */
  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add shadow on hover */
+        }
+
+        #chat-container {
+            margin-top: 20px;
+            padding: 15px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            background-color: #f9f9f9;
         }
 
         #welcome-message {
@@ -150,26 +167,40 @@
     <button onclick="submitComment()">Send Comment</button>
     <button onclick="goToPage3()">View All Comments</button>
     <div id="comment-list"></div>
-
-    <hr>
-    <b><ins>Chat Section ↓↓↓:</ins></b>
-    <p>Your chats will only be visible on this page.</p>
     <hr>
 
-    <div id="chat-list" style="height: 200px; overflow-y: scroll; border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">
-        <!-- Chat messages will appear here -->
-    </div>
-
+        <div id="chat-container">
+            <h2>Chat Room</h2>
+            <div id="online-users">Online users: 0</div>
+            <div id="chat-box" style="height: 200px; overflow-y: scroll; border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;"></div>
+            <div id="typing-indicator" style="font-style: italic; color: #888; margin-bottom: 5px;"></div>
     <input type="text" id="chat-input" placeholder="Type your message here">
     <button onclick="sendMessage()">Send Chat</button>
+        </div>
+
+    <hr>
+    <a href="index.html">
+        Back to home page
+    </a>
 
     <script>
         const socket = io();
+        let typing = false;
+        let timeout = undefined;
+
+        // Function to emit 'userOnline' when the page loads
+        window.onload = function() {
+            socket.emit('userOnline');
+        };
+
+        socket.on('userCount', (count) => {
+            document.getElementById('online-users').innerText = 'Online users: ' + count;
+        });
 
         function addMessage(data) {
             let messageDiv = document.createElement("div");
             messageDiv.innerText = data.username + ": " + data.messageText;
-            document.getElementById("chat-list").appendChild(messageDiv);
+            document.getElementById("chat-box").appendChild(messageDiv);
         }
 
         function addComment(data) {
@@ -177,6 +208,23 @@
             commentDiv.innerText = data.username + " (" + data.count + "): " + data.commentText;
             document.getElementById("comment-list").appendChild(commentDiv);
         }
+
+        function timeoutFunction() {
+            typing = false;
+            socket.emit("typing", { username: username, isTyping: false });
+        }
+
+        document.getElementById("chat-input").addEventListener("keypress", () => {
+            if (username === "") return;
+            if (typing === false) {
+                typing = true;
+                socket.emit("typing", { username: username, isTyping: true });
+                timeout = setTimeout(timeoutFunction, 3000);
+            } else {
+                clearTimeout(timeout);
+                timeout = setTimeout(timeoutFunction, 3000);
+            }
+        });
 
         socket.on('loadComments', (comments) => {
             comments.forEach(comment => {
@@ -189,10 +237,20 @@
         });
 
         socket.on('newMessage', (message) => {
+            // Clear typing indicator when a new message arrives
+            document.getElementById('typing-indicator').innerText = '';
             addMessage(message);
         });
 
-        let username = "";
+        socket.on('typing', (data) => {
+            if (data.isTyping && data.username !== username) {
+                document.getElementById('typing-indicator').innerText = data.username + ' is typing...'; 
+            } else {
+                document.getElementById('typing-indicator').innerText = '';
+            }
+        });
+
+        let username = ""; 
 
         function login() {
             const inputName = document.getElementById("username").value.trim();
@@ -208,7 +266,7 @@
         function submitComment() {
             let commentText = document.getElementById("comment-input").value.trim();
             if (commentText !== "" && username !== "") {
-                socket.emit('submitComment', { username: username, commentText: commentText });
+                socket.emit('newComment', { username: username, commentText: commentText });
                 document.getElementById("comment-input").value = "";
             } else if (username === "") {
                 alert("Please login before commenting.");
@@ -219,14 +277,17 @@
 
         function sendMessage() {
             let messageText = document.getElementById("chat-input").value.trim();
-            if (messageText !== "" && username !== "") {
-                socket.emit('sendMessage', { username: username, messageText: messageText });
-                document.getElementById("chat-input").value = "";
-            } else if (username === "") {
-                alert("Please login before commenting.");
-            } else {
-                alert("Comment cannot be empty.");
+            if (messageText === "") {
+                alert("Message cannot be empty.");
+                return;
             }
+            if (username === "") {
+                alert("Please login before chatting.");
+                return;
+            }
+            socket.emit('sendMessage', { username: username, messageText: messageText });
+                document.getElementById("chat-input").value = "";
+            timeoutFunction(); // Reset typing indicator after sending message
         }
 
         function goToPage3() {
